@@ -1,5 +1,5 @@
 [project]
-  subdomain = "my-app-jl0puoxc"
+  subdomain = "your-livekit-subdomain"
 
 [agent]
-  id = "CA_yDuTXg7ycpj6"
+  id = "your-agent-id"

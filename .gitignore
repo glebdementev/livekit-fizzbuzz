@@ -10,3 +10,7 @@ node_modules
 pnpm-lock.yaml
 .ignored_node_modules
 .venv
+#.env files
+.env
+.env.*
+.env.local
