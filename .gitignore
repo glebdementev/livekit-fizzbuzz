@@ -8,3 +8,4 @@
 /temp
 node_modules
 pnpm-lock.yaml
+.ignored_node_modules
