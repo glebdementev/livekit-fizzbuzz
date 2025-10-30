@@ -1,9 +1,11 @@
 from dotenv import load_dotenv
 
 from livekit import agents
-from livekit.agents import AgentSession, Agent, RoomInputOptions
+from livekit.agents import AgentSession, Agent, RoomInputOptions, function_tool, RunContext
 from livekit.plugins import noise_cancellation, silero
 from livekit.plugins.turn_detector.multilingual import MultilingualModel
+from enum import Enum
+from pydantic import BaseModel
 
 load_dotenv(".env.local")
 
@@ -16,6 +18,34 @@ class Assistant(Agent):
             Your responses are concise, to the point, and without any complex formatting or punctuation including emojis, asterisks, or other symbols.
             You are curious, friendly, and have a sense of humor.""",
         )
+
+    class WeatherCondition(str, Enum):
+        sunny = "sunny"
+        cloudy = "cloudy"
+        rainy = "rainy"
+        snowy = "snowy"
+
+    class WeatherResult(BaseModel):
+        weather: "Assistant.WeatherCondition"
+        temperature_f: int
+
+    @function_tool()
+    async def lookup_weather(
+        self,
+        context: RunContext,
+        location: str,
+    ) -> dict:
+        """Look up weather information for a given location.
+
+        Args:
+            location: The location to look up weather information for.
+        """
+        # Example static response; replace with real API integration if needed.
+        result = Assistant.WeatherResult(
+            weather=Assistant.WeatherCondition.sunny,
+            temperature_f=70,
+        )
+        return result.model_dump()
 
 
 async def entrypoint(ctx: agents.JobContext):
